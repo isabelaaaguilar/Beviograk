@@ -6,7 +6,7 @@ class GrafoNPD implements Cloneable {
 
 	public GrafoNPD prox;
 	public int valor;
-	public boolean visitado;
+	
 
 	public GrafoNPD() {
 		this(0);
@@ -15,7 +15,7 @@ class GrafoNPD implements Cloneable {
 	public GrafoNPD(int v) {
 		valor = v;
 		prox = null;
-		visitado = false;
+		
 	}
 
 	public GrafoNPD getClone(){
@@ -76,7 +76,7 @@ class DiagramaNPD {
 				// imprime até o fim de cada lista de vertices
 				for (GrafoNPD g = vetGrafos[i].prox; g != null; g = g.prox) {
 
-					System.out.print(g.valor + " " + g.visitado);
+					System.out.print(g.valor+ " ");
 					if (g.prox == null) {
 						System.out.print("\n");
 					} else {
@@ -94,24 +94,36 @@ class DiagramaNPD {
 	 * @throws Exception Se a lista nao contiver elementos.
 	 */
 	public void removerInicio(GrafoNPD primeiro) {
-		primeiro.visitado = true;
-		System.out.println(primeiro.valor + " "+ primeiro.visitado);
+		GrafoNPD tmp = primeiro.prox;   
+		primeiro.prox = primeiro.prox.prox;
+		tmp = null;
 	}
 	// método que recebe origem e destino, criar uma nova lista de adjacencia baseada na do grafo
 	public void enumerarCaminhos(int origem, int destino){
 		this.origem = origem;
 		this.destino = destino;
-		enumerarCaminhos(vetGrafos[origem].valor);
+
+		while(vetGrafos[origem].prox != null){
+			enumerarCaminhos(vetGrafos[origem].valor);
+		}
+				
 	}
 
 	// método de mesmo nome, recursivo passando origem e destino
 
-	public void enumerarCaminhos( int origem){
-		if(origem == this.destino){
+	public void enumerarCaminhos(int origem){
+		if(vetGrafos[origem-1].prox == null ){
+			System.out.println("pepino");
+		}else if(origem == this.destino ){
 			System.out.println("batata");
-		}else{
-			enumerarCaminhos(vetGrafos[origem-1].prox.valor);
-			removerInicio(vetGrafos[origem-1].prox);
+		}
+		else{
+			GrafoNPD temp =  vetGrafos[origem-1].prox;
+			while(vetGrafos[vetGrafos[origem-1].prox.valor].prox == null){
+				temp = temp.prox;
+			}
+			enumerarCaminhos(temp.valor);
+			removerInicio(vetGrafos[origem-1]);
 		}
 	}
 }
