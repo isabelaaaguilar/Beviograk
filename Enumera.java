@@ -103,43 +103,6 @@ public class Enumera {
 		}
 		System.out.println("Lista de Adjacência");
 		diagrama.imprimeListaAdjacencia();
-        for (int i = 0; i < diagrama.vertices; i++) {
-            for (int j = 0; j < diagrama.arestas; j++) {
-                GrafoNPD[] caminho = new GrafoNPD[] { diagrama.vetGrafos[i][j] };
-                buscaCiclos(caminho);
-            }
-        }
-
-
-        public void buscaCiclos(GrafoNPD[] listaAdjascencia) {
-            int v = listaAdjascencia[0];
-            int prox;
-            int[] subCaminho = new int[listaAdjascencia.length + 1];
-    
-            for (int i = 0; i < grafo.length; i++) {
-                for (int j = 0; j <= 1; j++) {
-    
-                    if (grafo[i][j] == v) { /* Vértice atual */
-                        prox = grafo[i][(j + 1) % 2];
-    
-                        if (!visitado(prox, listaAdjascencia)) { /* Vértice vizinho */
-                            subCaminho[0] = prox;
-                            System.arraycopy(listaAdjascencia, 0, subCaminho, 1, listaAdjascencia.length);
-                            buscaCiclos(subCaminho);
-                        } else if ((listaAdjascencia.length > 2)
-                                && (prox == listaAdjascencia[listaAdjascencia.length - 1])) { /* Ciclo encontrado */
-    
-                            int[] vetCaminhos = ordenarVertices(listaAdjascencia);
-                            int[] invertido = inverterCaminhos(vetCaminhos); /* Evitar duplicações */
-                            if (cicloNovo(vetCaminhos) && cicloNovo(invertido)) {
-                                ciclos.add(vetCaminhos);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    
 		System.out.println("*********************************************************************");
 	}
 }
