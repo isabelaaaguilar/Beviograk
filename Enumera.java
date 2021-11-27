@@ -6,6 +6,7 @@ class GrafoNPD implements Cloneable {
 
 	public GrafoNPD prox;
 	public int valor;
+	public boolean visitado;
 
 	public GrafoNPD() {
 		this(0);
@@ -14,6 +15,7 @@ class GrafoNPD implements Cloneable {
 	public GrafoNPD(int v) {
 		valor = v;
 		prox = null;
+		visitado = false;
 	}
 
 	public GrafoNPD getClone(){
@@ -74,7 +76,7 @@ class DiagramaNPD {
 				// imprime até o fim de cada lista de vertices
 				for (GrafoNPD g = vetGrafos[i].prox; g != null; g = g.prox) {
 
-					System.out.print(g.valor);
+					System.out.print(g.valor + " " + g.visitado);
 					if (g.prox == null) {
 						System.out.print("\n");
 					} else {
@@ -92,12 +94,8 @@ class DiagramaNPD {
 	 * @throws Exception Se a lista nao contiver elementos.
 	 */
 	public void removerInicio(GrafoNPD primeiro) {
-
-      GrafoNPD tmp = primeiro;
-	  primeiro = primeiro.prox;	
-      tmp.prox = null;
-      tmp = null;
-		
+		primeiro.visitado = true;
+		System.out.println(primeiro.valor + " "+ primeiro.visitado);
 	}
 	// método que recebe origem e destino, criar uma nova lista de adjacencia baseada na do grafo
 	public void enumerarCaminhos(int origem, int destino){
