@@ -110,6 +110,7 @@ class DiagramaNPD {
 			tmp = null;
 		}
 	}
+
 	// método que recebe origem e destino, criar uma nova lista de adjacencia baseada na do grafo
 	public void enumerarCaminhos(int origem, int destino){
 		this.origem = origem;
@@ -123,10 +124,8 @@ class DiagramaNPD {
 				System.out.println(elementoCaminho.toString());
 				encontrei = false;
 				elementoCaminho.clear();
-			}
-			
-		}
-				
+			}	
+		}			
 	}
 
 	// método de mesmo nome, recursivo passando origem e destino
