@@ -41,7 +41,7 @@ class DiagramaNPD {
 	private boolean encontrei = false;
 	private int numCaminhos = 0;
 	private List<Integer> elementoCaminho = new ArrayList<Integer>(); 
-
+	
 	public DiagramaNPD() {
 		this(0);
 	}
@@ -116,8 +116,10 @@ class DiagramaNPD {
 		this.origem = origem;
 		this.destino = destino;
 		numCaminhos = 0;
-		while(vetGrafos[origem].prox != null){
-			enumerarCaminhos(vetGrafos[origem].valor);
+		int cont = 0;
+		while(vetGrafos[origem].prox != null && cont < vetGrafos.length){
+			cont++;
+			enumerarCaminhos(vetGrafos[origem]);
 			if(encontrei){
 				numCaminhos++;
 				elementoCaminho.add(destino);
@@ -129,20 +131,24 @@ class DiagramaNPD {
 	}
 
 	// método de mesmo nome, recursivo passando origem e destino
-
-	public void enumerarCaminhos(int origem){
-		 if (origem == this.destino ){
-			this.encontrei = true;
-		}
-		else{
-			GrafoNPD temp =  vetGrafos[origem-1].prox;
-			if (temp != null)
-				elementoCaminho.add(origem);
-			while(temp == null){
-				temp = vetGrafos[vetGrafos[origem].valor].prox.prox;
+	public void enumerarCaminhos(GrafoNPD origem){
+		if(origem != null){
+			if (origem.valor == this.destino ){
+				this.encontrei = true;
+				removerInicio(vetGrafos[this.origem]);
 			}
-			enumerarCaminhos(temp.valor);
-			removerInicio(vetGrafos[origem-1]);
+			else{
+				GrafoNPD temp =  vetGrafos[origem.valor-1].prox;
+				if (temp != null)
+					elementoCaminho.add(origem.valor);
+
+				enumerarCaminhos(temp);
+				if(vetGrafos[origem.valor-1].valor != vetGrafos[this.origem].valor){
+					removerInicio(vetGrafos[origem.valor-1]);
+				}
+			}
+		}else{
+			elementoCaminho.clear();
 		}
 	}
 }
@@ -152,7 +158,7 @@ public class Enumera {
 	public static void main(String[] args) {
 		DiagramaNPD diagrama = new DiagramaNPD();
 		try {
-			FileReader arq = new FileReader("entradas/entradatp3.txt");
+			FileReader arq = new FileReader("entradas/entrada2.txt");
 			BufferedReader lerArq = new BufferedReader(arq);
 
 			System.out.println("*********************************************************************");
@@ -174,10 +180,9 @@ public class Enumera {
 			System.err.printf("Erro na abertura do arquivo: %s.\n", erro.getMessage());
 		}
 		
-		//diagrama.imprimeListaAdjacencia();
-		diagrama.enumerarCaminhos(0,6);
+		diagrama.enumerarCaminhos(3,6);
 		System.out.println("Max caminhos: "+ diagrama.getNumCaminhos());
-		//diagrama.imprimeListaAdjacencia();
+		diagrama.imprimeListaAdjacencia();
 		System.out.println("*********************************************************************");
 	}
 }
