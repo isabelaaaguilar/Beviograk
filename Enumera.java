@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 class GrafoNPD implements Cloneable {
 
@@ -36,6 +38,9 @@ class DiagramaNPD {
 	public GrafoNPD[] vetGrafos;
 	private int origem;
 	private int destino;
+	private boolean encontrei = false;
+	private int numCaminhos;
+	private List<Integer> elementoCaminho = new ArrayList<Integer>(); 
 
 	public DiagramaNPD() {
 		this(0);
@@ -107,6 +112,12 @@ class DiagramaNPD {
 
 		while(vetGrafos[origem].prox != null){
 			enumerarCaminhos(vetGrafos[origem].valor);
+			if(encontrei){
+				elementoCaminho.add(destino);
+				System.out.println(elementoCaminho.toString());
+				encontrei = false;
+				elementoCaminho.clear();
+			}
 		}
 				
 	}
@@ -115,13 +126,16 @@ class DiagramaNPD {
 
 	public void enumerarCaminhos(int origem){
 		if(origem == this.destino ){
-			System.out.println("batata");
+			this.encontrei = true;
 		}
 		else{
 			GrafoNPD temp =  vetGrafos[origem-1].prox;
 			while(temp == null){
 				temp = vetGrafos[vetGrafos[origem].valor].prox.prox;
 			}
+			if (temp != null)
+				elementoCaminho.add(origem);
+			
 			enumerarCaminhos(temp.valor);
 			removerInicio(vetGrafos[origem-1]);
 		}
