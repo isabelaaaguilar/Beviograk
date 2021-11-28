@@ -114,7 +114,7 @@ class DiagramaNPD {
 	public void enumerarCaminhos(int origem, int destino){
 		this.origem = origem;
 		this.destino = destino;
-
+		numCaminhos = 0;
 		while(vetGrafos[origem].prox != null){
 			enumerarCaminhos(vetGrafos[origem].valor);
 			if(encontrei){
@@ -124,7 +124,7 @@ class DiagramaNPD {
 				encontrei = false;
 				elementoCaminho.clear();
 			}
-			numCaminhos = 0;
+			
 		}
 				
 	}
@@ -132,10 +132,7 @@ class DiagramaNPD {
 	// método de mesmo nome, recursivo passando origem e destino
 
 	public void enumerarCaminhos(int origem){
-		if(origem == null){
-			System.out.println("pepino");
-		}
-		if(origem == this.destino ){
+		 if (origem == this.destino ){
 			this.encontrei = true;
 		}
 		else{
@@ -179,7 +176,7 @@ public class Enumera {
 		}
 		
 		//diagrama.imprimeListaAdjacencia();
-		diagrama.enumerarCaminhos(0,3	);
+		diagrama.enumerarCaminhos(0,6);
 		System.out.println("Max caminhos: "+ diagrama.getNumCaminhos());
 		//diagrama.imprimeListaAdjacencia();
 		System.out.println("*********************************************************************");
