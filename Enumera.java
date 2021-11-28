@@ -94,9 +94,11 @@ class DiagramaNPD {
 	 * @throws Exception Se a lista nao contiver elementos.
 	 */
 	public void removerInicio(GrafoNPD primeiro) {
-		GrafoNPD tmp = primeiro.prox;   
-		primeiro.prox = primeiro.prox.prox;
-		tmp = null;
+		GrafoNPD tmp = primeiro.prox;
+		if(tmp != null) {
+			primeiro.prox = primeiro.prox.prox;
+			tmp = null;
+		}
 	}
 	// método que recebe origem e destino, criar uma nova lista de adjacencia baseada na do grafo
 	public void enumerarCaminhos(int origem, int destino){
@@ -112,15 +114,13 @@ class DiagramaNPD {
 	// método de mesmo nome, recursivo passando origem e destino
 
 	public void enumerarCaminhos(int origem){
-		if(vetGrafos[origem-1].prox == null ){
-			System.out.println("pepino");
-		}else if(origem == this.destino ){
+		if(origem == this.destino ){
 			System.out.println("batata");
 		}
 		else{
 			GrafoNPD temp =  vetGrafos[origem-1].prox;
-			while(vetGrafos[vetGrafos[origem-1].prox.valor].prox == null){
-				temp = temp.prox;
+			while(temp == null){
+				temp = vetGrafos[vetGrafos[origem].valor].prox.prox;
 			}
 			enumerarCaminhos(temp.valor);
 			removerInicio(vetGrafos[origem-1]);
