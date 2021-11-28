@@ -39,7 +39,7 @@ class DiagramaNPD {
 	private int origem;
 	private int destino;
 	private boolean encontrei = false;
-	private int numCaminhos;
+	private int numCaminhos = 0;
 	private List<Integer> elementoCaminho = new ArrayList<Integer>(); 
 
 	public DiagramaNPD() {
@@ -56,6 +56,11 @@ class DiagramaNPD {
 		this.arestas = 0;
 		this.vertices = vert;
 	}
+
+	public int getNumCaminhos() {
+		return numCaminhos;
+	}
+
 
 	public void criarNovaAresta(GrafoNPD origem, int destino) {
 		boolean conexao = false;
@@ -113,11 +118,13 @@ class DiagramaNPD {
 		while(vetGrafos[origem].prox != null){
 			enumerarCaminhos(vetGrafos[origem].valor);
 			if(encontrei){
+				numCaminhos++;
 				elementoCaminho.add(destino);
 				System.out.println(elementoCaminho.toString());
 				encontrei = false;
 				elementoCaminho.clear();
 			}
+			numCaminhos = 0;
 		}
 				
 	}
@@ -125,17 +132,19 @@ class DiagramaNPD {
 	// método de mesmo nome, recursivo passando origem e destino
 
 	public void enumerarCaminhos(int origem){
+		if(origem == null){
+			System.out.println("pepino");
+		}
 		if(origem == this.destino ){
 			this.encontrei = true;
 		}
 		else{
 			GrafoNPD temp =  vetGrafos[origem-1].prox;
+			if (temp != null)
+				elementoCaminho.add(origem);
 			while(temp == null){
 				temp = vetGrafos[vetGrafos[origem].valor].prox.prox;
 			}
-			if (temp != null)
-				elementoCaminho.add(origem);
-			
 			enumerarCaminhos(temp.valor);
 			removerInicio(vetGrafos[origem-1]);
 		}
@@ -151,7 +160,7 @@ public class Enumera {
 			BufferedReader lerArq = new BufferedReader(arq);
 
 			System.out.println("*********************************************************************");
-			System.out.println("                 GrafoNPD Direcionado                    ");
+			System.out.println("                 Caminhos Disjuntos                    ");
 			System.out.println("*********************************************************************");
 			int qtde_vertices = Integer.parseInt(lerArq.readLine());
 			diagrama = new DiagramaNPD(qtde_vertices);
@@ -168,10 +177,11 @@ public class Enumera {
 		} catch (IOException erro) {
 			System.err.printf("Erro na abertura do arquivo: %s.\n", erro.getMessage());
 		}
-		System.out.println("Lista de Adjacência");
-		diagrama.imprimeListaAdjacencia();
-		diagrama.enumerarCaminhos(0,6);
-		diagrama.imprimeListaAdjacencia();
+		
+		//diagrama.imprimeListaAdjacencia();
+		diagrama.enumerarCaminhos(0,3	);
+		System.out.println("Max caminhos: "+ diagrama.getNumCaminhos());
+		//diagrama.imprimeListaAdjacencia();
 		System.out.println("*********************************************************************");
 	}
 }
